@@ -1,9 +1,10 @@
 use mysql::params;
 use mysql::prelude::Queryable;
+use model_macro::traits::sql::GenerateTable;
 use crate::config::cnn::get_connection;
 use crate::models::client::Client;
 
-pub fn create(name: &str, phone: &str) -> Result<(), mysql::Error> {
+pub fn create<T: GenerateTable>(name: &str, phone: &str) -> Result<(), mysql::Error> {
     let mut conn = get_connection()?;
 
     conn.exec_drop(

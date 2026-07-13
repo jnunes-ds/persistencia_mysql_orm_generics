@@ -1,6 +1,9 @@
-#[derive(Debug)]
-pub struct Client {
-    pub id: u32,
-    pub name: String,
-    pub phone: String,
+use model_macro::create_struct_and_metadata;
+
+create_struct_and_metadata! {
+    "clients" => Client {
+        id: u32, "autoincrement",
+        name: String, "varchar(100)",
+        phone: String, "varchar(15)",
+    }
 }

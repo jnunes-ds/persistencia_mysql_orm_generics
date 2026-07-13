@@ -1,9 +1,9 @@
-mod traits;
+pub mod traits;
 
 
 #[macro_export]
 macro_rules! create_struct_and_metadata {
-    ($table_name:expr => $struct_name:ident { $($field_name: ident $field_type:ty, $metadata:expr),* $(,)? }) => {
+    ($table_name:expr => $struct_name:ident { $($field_name:ident: $field_type:ty, $metadata:expr),* $(,)? }) => {
         #[derive(Debug)]
         pub struct $struct_name {
             $(pub $field_name: $field_type),*
@@ -12,19 +12,19 @@ macro_rules! create_struct_and_metadata {
         impl $struct_name {
             pub fn metadata() -> Vec<(&'static str, &'static str, &'static str)> {
                 vec![
-                    $( (stringify!($field_name), stringify!($field_type), $metadata) )*
+                    $( (stringify!($field_name), stringify!($field_type), $metadata) ),*
                 ]
             }
         }
 
-        impl traits::sql::GenerateTable for $struct_name {
-            fn from_raw(raw: &std::collections::HashMap<String, String>) -> Self {
+        impl model_macro::traits::sql::GenerateTable for $struct_name {
+            fn from_raw(raw: std::collections::HashMap<String, String>) -> Self {
                 Self {
                     $(
                         $field_name: match raw.get(stringify!($field_name)) {
                             Some(value) => value.parse().unwrap_or_default(),
                             None => Default::default(),
-                        }
+                        },
                     )*
                 }
             }
