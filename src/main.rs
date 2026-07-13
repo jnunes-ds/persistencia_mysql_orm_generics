@@ -9,7 +9,13 @@ mod repository;
 use screen::display;
 
 use std::io;
+use model_macro::traits::sql::GenerateTable;
+
 fn main() {
+    // generic_repository::drop_table::<Client>();
+    // generic_repository::create_table::<Client>();
+    // return;
+
     loop {
         println!("CRUD Clients");
         println!("\
