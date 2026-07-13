@@ -1,5 +1,6 @@
 mod traits;
 
+
 #[macro_export]
 macro_rules! create_struct_and_metadata {
     ($table_name:expr => $struct_name:ident { $($field_name: ident $field_type:ty, $metadata:expr),* $(,)? }) => {
@@ -16,7 +17,7 @@ macro_rules! create_struct_and_metadata {
             }
         }
 
-        impl model_macro::traits::sql::Generatable for $struct_name {
+        impl traits::sql::GenerateTable for $struct_name {
             fn from_raw(raw: &std::collections::HashMap<String, String>) -> Self {
                 Self {
                     $(
