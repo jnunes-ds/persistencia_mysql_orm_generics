@@ -45,7 +45,7 @@ macro_rules! create_struct_and_metadata {
                     };
                     format!("{} {}", field, sql_type)
                 }).collect::<Vec<String>>().join(",\n ");
-                format!("CREATA TABLE {} (\n   {}\n)", $table_name, columns)
+                format!("CREATE TABLE IF NOT EXISTS {} (\n  {}\n)", $table_name, columns)
             }
 
             fn generate_sql_drop_table() -> String {
