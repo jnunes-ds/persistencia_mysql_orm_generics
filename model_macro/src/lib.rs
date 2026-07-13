@@ -1,3 +1,5 @@
+mod traits;
+
 #[macro_export]
 macro_rules! create_struct_and_metadata {
     ($table_name:expr => $struct_name:ident { $($field_name: ident $field_type:ty, $metadata:expr),* $(,)? }) => {
@@ -71,11 +73,11 @@ macro_rules! create_struct_and_metadata {
 
                 format!("UPDATE {} SET {} WHERE id = :id", $table_name, updates)
             }
-            
+
             fn generate_sql_delete() -> String {
                 format!("DELETE FROM {} WHERE id = :id", $table_name)
             }
-            
+
             fn generate_sql_select() -> String {
                 format!("SELECT * FROM {}", $table_name)
             }
