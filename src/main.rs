@@ -1,4 +1,5 @@
-use std::io;
+#[macro_use]
+extern crate model_macro;
 
 mod models;
 mod screen;
@@ -6,6 +7,8 @@ mod config;
 mod repository;
 
 use screen::display;
+
+use std::io;
 fn main() {
     loop {
         println!("CRUD Clients");

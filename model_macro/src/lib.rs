@@ -18,10 +18,10 @@ macro_rules! create_struct_and_metadata {
         }
 
         impl model_macro::traits::sql::GenerateTable for $struct_name {
-            fn from_raw(raw: std::collections::HashMap<String, String>) -> Self {
+            fn from_row(row: std::collections::HashMap<String, String>) -> Self {
                 Self {
                     $(
-                        $field_name: match raw.get(stringify!($field_name)) {
+                        $field_name: match row.get(stringify!($field_name)) {
                             Some(value) => value.parse().unwrap_or_default(),
                             None => Default::default(),
                         },

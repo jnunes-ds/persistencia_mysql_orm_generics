@@ -1,5 +1,6 @@
 use std::io;
 use std::process::Command;
+use crate::models::client::Client;
 use crate::repository::generic_repository;
 
 pub fn create_client() {
@@ -16,7 +17,13 @@ pub fn create_client() {
     let name = name.trim().to_string();
     let phone = phone.trim().to_string();
 
-    generic_repository::create::<crate::models::client::Client>(&name.trim(), &phone.trim()).expect("Failed to create client");
+    let client = Client {
+        id: 0, // Temporary ID, will be updated by the database
+        name,
+        phone
+    };
+
+    generic_repository::insert::<Client>(&client).expect("Failed to create client");
 
     println!("Client created successfully!");
     pause_for_seconds(2);
@@ -25,7 +32,7 @@ pub fn create_client() {
 
 pub fn list_clients() -> Result<(), mysql::Error> {
     clear_screen();
-    let clients = generic_repository::list()?;
+    let clients = generic_repository::list::<Client>()?;
     if clients.len() > 0 {
         for client in clients {
             println!("--------------------");
@@ -56,8 +63,14 @@ pub fn update_clients() -> Result<(), mysql::Error> {
 
     println!("New client phone");
     io::stdin().read_line(&mut phone).expect("Failed to read line");
+    
+    let client = Client {
+        id,
+        name,
+        phone
+    };
 
-    generic_repository::update(id, &name.trim(), &phone.trim()).expect("Failed to update client");
+    generic_repository::update::<Client>(id, &client).expect("Failed to update client");
 
     println!("Client updated successfully!");
     pause_for_seconds(2);
@@ -74,7 +87,7 @@ pub fn delete_client() -> Result<(), mysql::Error> {
     io::stdin().read_line(&mut id).expect("Failed to read line");
     let id = id.trim().parse::<u32>().expect("Invalid ID");
 
-    generic_repository::delete(id).expect("Failed to delete client");
+    generic_repository::delete::<Client>(id).expect("Failed to delete client");
 
     println!("Client deleted successfully!");
     pause_for_seconds(2);
